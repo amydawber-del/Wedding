@@ -2,885 +2,895 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Venue Decision Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Venue Viewing Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #1a1218;
-  --ink-soft: #5c4f58;
-  --ink-faint: #9b8f97;
-  --rose: #c8687a;
-  --rose-light: #f5dde2;
-  --rose-pale: #fdf0f2;
-  --rose-dark: #8c3f4f;
-  --sage: #6a9278;
-  --sage-light: #d8ece2;
-  --gold: #b8862e;
-  --gold-light: #f5e8cc;
-  --amber: #d4823a;
-  --danger: #c0392b;
-  --danger-light: #fdecea;
-  --surface: #fffaf9;
-  --surface-2: #f7f0f2;
-  --surface-3: #f0e8ec;
-  --border: rgba(180,140,155,0.18);
-  --border-med: rgba(180,140,155,0.32);
-  --border-strong: rgba(180,140,155,0.45);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 2px 16px rgba(100,50,70,0.07);
-  --shadow-lg: 0 8px 40px rgba(100,50,70,0.12);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--surface);
-  color: var(--ink);
-  min-height: 100vh;
-  font-size: 14px;
-}
+  :root {
+    --ink: #1a1218;
+    --ink-soft: #5c4f58;
+    --ink-faint: #9b8f97;
+    --rose: #c8687a;
+    --rose-light: #f5dde2;
+    --rose-pale: #fdf0f2;
+    --sage: #7a9e8a;
+    --sage-light: #dceee4;
+    --gold: #c4943a;
+    --gold-light: #f5e8d0;
+    --surface: #fffaf9;
+    --surface-2: #f7f0f2;
+    --border: rgba(180,140,155,0.2);
+    --border-strong: rgba(180,140,155,0.4);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
 
-/* ── Layout ── */
-.app-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
-@media (max-width: 768px) { .app-shell { grid-template-columns: 1fr; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* ── Sidebar ── */
-.sidebar {
-  background: #2a1a20;
-  padding: 2rem 1.25rem;
-  position: sticky; top: 0; height: 100vh;
-  overflow-y: auto;
-  display: flex; flex-direction: column;
-}
-@media (max-width: 768px) { .sidebar { display: none; } }
-.sidebar-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem; font-weight: 500;
-  color: #fff; margin-bottom: 0.3rem;
-  letter-spacing: 0.01em;
-}
-.sidebar-logo em { color: var(--rose); font-style: italic; }
-.sidebar-sub { font-size: 11px; color: rgba(255,255,255,0.3); margin-bottom: 2rem; }
-.nav-section { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin: 1.25rem 0 0.5rem; font-weight: 500; }
-.nav-item {
-  display: flex; align-items: center; gap: 9px;
-  padding: 8px 10px; border-radius: 8px;
-  color: rgba(255,255,255,0.55); font-size: 13px;
-  cursor: pointer; margin-bottom: 2px;
-  transition: all 0.15s; border: none; background: none;
-  width: 100%; text-align: left; font-family: 'DM Sans', sans-serif;
-}
-.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
-.nav-item.active { background: rgba(200,104,122,0.18); color: var(--rose); }
-.nav-icon { font-size: 14px; }
-.sidebar-bottom { margin-top: auto; }
-.sync-btn {
-  width: 100%; padding: 9px; border-radius: 8px;
-  background: rgba(200,104,122,0.15); border: 0.5px solid rgba(200,104,122,0.3);
-  color: var(--rose); font-size: 12px; font-family: 'DM Sans', sans-serif;
-  cursor: pointer; transition: all 0.15s; font-weight: 500;
-}
-.sync-btn:hover { background: rgba(200,104,122,0.25); }
-.sync-time { font-size: 10px; color: rgba(255,255,255,0.2); text-align: center; margin-top: 6px; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 120px;
+  }
 
-/* ── Main content ── */
-.main { flex: 1; overflow-y: auto; }
-.page { display: none; padding: 2rem 2rem 3rem; }
-.page.active { display: block; }
-@media (max-width: 768px) { .page { padding: 1.25rem 1rem 5rem; } }
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(160deg, #2a1a20 0%, #3d2030 100%);
+    padding: 2.5rem 1.25rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(200,104,122,0.12);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(200,104,122,0.07);
+  }
+  .header-tag {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+  .header p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+  }
 
-/* ── Mobile nav ── */
-.mobile-nav {
-  display: none;
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: #2a1a20; border-top: 0.5px solid rgba(255,255,255,0.08);
-  padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
-  z-index: 100; justify-content: space-around;
-}
-@media (max-width: 768px) { .mobile-nav { display: flex; } }
-.mob-nav-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 6px 12px; border: none; background: none;
-  color: rgba(255,255,255,0.4); font-size: 10px; cursor: pointer;
-  font-family: 'DM Sans', sans-serif; border-radius: 8px;
-  transition: color 0.15s;
-}
-.mob-nav-btn .mn-icon { font-size: 18px; }
-.mob-nav-btn.active { color: var(--rose); }
+  /* ── Venue meta ── */
+  .meta-card {
+    margin: 1.25rem 1rem 0;
+    background: #fff;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.1rem 0.9rem;
+  }
+  .meta-card h2 {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.85rem;
+    font-weight: 500;
+  }
+  .field-row { display: flex; gap: 10px; margin-bottom: 0.65rem; }
+  .field-row:last-child { margin-bottom: 0; }
+  .field { flex: 1; }
+  .field label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .field input, .field select {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 9px 11px;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    border-color: var(--rose);
+    background: #fff;
+  }
+  .field input::placeholder { color: var(--ink-faint); }
 
-/* ── Page header ── */
-.page-hdr { margin-bottom: 1.75rem; }
-.page-hdr h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 500; line-height: 1.1;
-  margin-bottom: 0.25rem;
-}
-.page-hdr p { font-size: 13px; color: var(--ink-soft); }
+  /* ── Score widget ── */
+  .score-row { display: flex; gap: 6px; margin-top: 0.85rem; flex-wrap: wrap; }
+  .score-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border-strong);
+    background: var(--surface-2);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .score-btn.sel { background: var(--rose); border-color: var(--rose); color: #fff; }
+  .score-label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+  }
 
-/* ── Stats row ── */
-.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-bottom: 1.5rem; }
-.stat-card {
-  background: #fff; border: 0.5px solid var(--border-med);
-  border-radius: var(--radius-sm); padding: 1rem 1.1rem;
-}
-.stat-card .s-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; margin-bottom: 6px; }
-.stat-card .s-val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; line-height: 1; }
-.stat-card .s-sub { font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
-.stat-card.highlight { background: var(--rose-pale); border-color: rgba(200,104,122,0.3); }
-.stat-card.highlight .s-val { color: var(--rose-dark); }
+  /* ── Progress bar ── */
+  .progress-wrap {
+    margin: 1rem 1rem 0;
+    background: #fff;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.85rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 4px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .progress-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
 
-/* ── Section card ── */
-.section-card {
-  background: #fff; border: 0.5px solid var(--border);
-  border-radius: var(--radius); padding: 1.4rem;
-  margin-bottom: 1.25rem; box-shadow: var(--shadow);
-}
-.section-card h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.25rem; font-weight: 500; margin-bottom: 1rem;
-}
-.section-card .sh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
-.section-card h2.inline { margin-bottom: 0; }
+  /* ── Sections ── */
+  .sections { padding: 0 1rem; margin-top: 1rem; }
 
-/* ── Podium ── */
-.podium { display: grid; grid-template-columns: 1fr 1.08fr 1fr; gap: 10px; align-items: end; margin-bottom: 1.5rem; }
-.podium-slot { text-align: center; cursor: pointer; }
-.podium-slot:hover .pod-card { border-color: var(--rose); }
-.pod-rank { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; font-weight: 500; }
-.pod-card {
-  border-radius: var(--radius-sm); padding: 1rem 0.75rem 0.85rem;
-  border: 0.5px solid var(--border-med); background: #fff;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.pod-card:hover { box-shadow: var(--shadow); }
-.pod-card.gold-card { background: linear-gradient(160deg, #fffbf0 0%, #fef6e4 100%); border-color: rgba(184,134,46,0.4); }
-.pod-trophy { font-size: 1.6rem; margin-bottom: 0.4rem; }
-.pod-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; line-height: 1.2; margin-bottom: 6px; }
-.pod-score { display: inline-flex; align-items: center; gap: 4px; background: var(--rose-pale); color: var(--rose-dark); font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
-.pod-cost { font-size: 12px; color: var(--ink-soft); }
-.pod-gut { font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
+  .section {
+    background: #fff;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
 
-/* ── Venue table ── */
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-thead th {
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-faint); font-weight: 500; text-align: left;
-  padding: 8px 12px; border-bottom: 0.5px solid var(--border-med);
-  white-space: nowrap; cursor: pointer; user-select: none;
-}
-thead th:hover { color: var(--ink); }
-thead th.sorted { color: var(--rose); }
-tbody tr { border-bottom: 0.5px solid var(--border); transition: background 0.1s; cursor: pointer; }
-tbody tr:hover { background: var(--rose-pale); }
-tbody td { padding: 11px 12px; font-size: 13px; vertical-align: middle; }
-.td-name { font-weight: 500; }
-.td-cost { font-variant-numeric: tabular-nums; }
-.score-pill {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 50%;
-  font-size: 12px; font-weight: 500;
-}
-.score-pill.high { background: var(--sage-light); color: #2d6b4a; }
-.score-pill.mid { background: var(--gold-light); color: #7a5010; }
-.score-pill.low { background: var(--rose-light); color: var(--rose-dark); }
-.score-pill.none { background: var(--surface-3); color: var(--ink-faint); }
-.risk-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px;
-}
-.risk-badge.High { background: #fdecea; color: var(--danger); }
-.risk-badge.Medium { background: var(--gold-light); color: #8a5000; }
-.risk-badge.Low { background: var(--sage-light); color: #2a5c40; }
-.status-btn {
-  font-size: 16px; cursor: pointer; border: none; background: none;
-  padding: 2px 4px; border-radius: 4px; transition: transform 0.1s;
-}
-.status-btn:hover { transform: scale(1.2); }
-.status-sel { font-size: 1rem; }
+  .sec-hdr {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    gap: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .sec-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .sec-icon.rose { background: var(--rose-light); }
+  .sec-icon.sage { background: var(--sage-light); }
+  .sec-icon.gold { background: var(--gold-light); }
 
-/* ── Filters bar ── */
-.filters-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
-.filter-select, .filter-input {
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  padding: 7px 10px; border-radius: var(--radius-sm);
-  border: 0.5px solid var(--border-strong); background: var(--surface-2);
-  color: var(--ink); outline: none; cursor: pointer;
-  -webkit-appearance: none; appearance: none;
-}
-.filter-input { width: 130px; }
-.filter-input:focus { border-color: var(--rose); background: #fff; }
-.filter-clear { font-size: 11px; color: var(--rose); cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 4px; }
+  .sec-title-wrap { flex: 1; }
+  .sec-title { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .sec-prog { font-size: 11px; color: var(--ink-faint); margin-top: 1px; }
+  .sec-chevron {
+    color: var(--ink-faint);
+    font-size: 12px;
+    transition: transform 0.22s;
+  }
+  .section.open .sec-chevron { transform: rotate(90deg); }
 
-/* ── Charts ── */
-.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-@media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
-.chart-card { background: #fff; border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
-.chart-card h3 { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; margin-bottom: 1rem; }
-.chart-container { position: relative; height: 240px; }
+  .sec-body { display: none; border-top: 0.5px solid var(--border); }
+  .section.open .sec-body { display: block; }
 
-/* ── Detail panel ── */
-.detail-overlay {
-  position: fixed; inset: 0; background: rgba(26,18,24,0.5);
-  z-index: 200; display: none; align-items: flex-end;
-  backdrop-filter: blur(4px);
-}
-.detail-overlay.open { display: flex; }
-@media (min-width: 600px) { .detail-overlay { align-items: center; justify-content: center; } }
-.detail-panel {
-  background: var(--surface); width: 100%; max-width: 580px;
-  max-height: 90vh; border-radius: var(--radius) var(--radius) 0 0;
-  overflow-y: auto; padding: 1.5rem;
-}
-@media (min-width: 600px) { .detail-panel { border-radius: var(--radius); } }
-.detail-close { float: right; border: none; background: none; font-size: 1.2rem; cursor: pointer; color: var(--ink-faint); padding: 4px; }
-.detail-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 500; margin-bottom: 0.25rem; }
-.detail-meta { font-size: 12px; color: var(--ink-faint); margin-bottom: 1.25rem; }
-.detail-costs { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
-.detail-cost-item { background: var(--surface-2); border-radius: var(--radius-sm); padding: 0.7rem 0.85rem; }
-.detail-cost-item .dc-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; margin-bottom: 3px; }
-.detail-cost-item .dc-val { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 500; }
-.detail-cost-item.total { background: var(--rose-pale); }
-.detail-cost-item.total .dc-val { color: var(--rose-dark); }
-.detail-section { margin-bottom: 1rem; }
-.detail-section h4 { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; margin-bottom: 0.5rem; }
-.detail-notes { font-size: 13px; color: var(--ink-soft); line-height: 1.6; background: var(--surface-2); border-radius: var(--radius-sm); padding: 0.75rem; white-space: pre-wrap; }
-.detail-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
-.partner-row { display: flex; align-items: center; gap: 10px; background: var(--surface-2); border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin-bottom: 1rem; }
-.partner-row label { font-size: 12px; color: var(--ink-soft); }
-.partner-row input { width: 60px; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 5px 8px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: #fff; color: var(--ink); outline: none; }
-.score-gap { font-size: 12px; padding: 3px 10px; border-radius: 20px; margin-left: auto; }
-.score-gap.warning { background: #fdecea; color: var(--danger); }
-.score-gap.ok { background: var(--sage-light); color: #2d6b4a; }
-.followup-area { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 10px; border: 0.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); min-height: 72px; resize: vertical; outline: none; margin-bottom: 0.5rem; }
-.followup-area:focus { border-color: var(--rose); background: #fff; }
-.save-detail-btn { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 8px 16px; border-radius: var(--radius-sm); border: none; background: var(--rose); color: #fff; cursor: pointer; }
-.save-detail-btn:hover { background: var(--rose-dark); }
+  /* ── Items ── */
+  .item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 1rem;
+    gap: 11px;
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.1s;
+  }
+  .item:last-of-type { border-bottom: none; }
+  .item.checked { background: var(--rose-pale); }
 
-/* ── Budget page ── */
-.budget-input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.budget-input-row label { font-size: 12px; color: var(--ink-soft); }
-.budget-field { font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; border: 0.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); outline: none; width: 160px; }
-.budget-field:focus { border-color: var(--rose); background: #fff; }
-.variance-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 10px; }
-.variance-card {
-  border-radius: var(--radius-sm); padding: 1rem 1.1rem;
-  border: 0.5px solid var(--border-med);
-}
-.variance-card .vc-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
-.variance-card .vc-total { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 500; }
-.variance-card .vc-var { font-size: 12px; margin-top: 3px; }
-.variance-card.over { background: #fdecea; border-color: rgba(192,57,43,0.2); }
-.variance-card.over .vc-var { color: var(--danger); }
-.variance-card.under { background: #eaf3de; border-color: rgba(106,146,120,0.3); }
-.variance-card.under .vc-var { color: #2d6b4a; }
+  .check-wrap {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .check-wrap.checked {
+    background: var(--rose);
+    border-color: var(--rose);
+  }
+  .check-wrap.checked::after {
+    content: '';
+    width: 5px; height: 9px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(42deg) translateY(-1px);
+    display: block;
+  }
+  .item-content { flex: 1; cursor: pointer; }
+  .item-label {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .item.checked .item-label { color: var(--ink-faint); text-decoration: line-through; }
+  .item-hint { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
 
-/* ── Loading / empty ── */
-.loading { text-align: center; padding: 4rem 1rem; }
-.loading-spinner { width: 32px; height: 32px; border: 2px solid var(--rose-light); border-top-color: var(--rose); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading p { font-size: 13px; color: var(--ink-faint); }
-.empty-state { text-align: center; padding: 4rem 1rem; }
-.empty-state .es-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-.empty-state p { font-size: 13px; color: var(--ink-faint); line-height: 1.6; }
-.empty-state a { color: var(--rose); text-decoration: none; }
+  /* ── Gut feeling ── */
+  .gut-wrap { padding: 10px 1rem 0.85rem; border-top: 0.5px solid var(--border); }
+  .gut-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; font-weight: 500; }
+  .gut-options { display: flex; gap: 6px; flex-wrap: wrap; }
+  .gut-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 400;
+  }
+  .gut-btn:active { transform: scale(0.96); }
+  .gut-btn.sel { background: var(--rose); border-color: var(--rose); color: #fff; }
 
-/* ── Toast ── */
-.toast {
-  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(10px);
-  background: var(--ink); color: #fff; font-size: 12px; padding: 8px 16px;
-  border-radius: 20px; opacity: 0; transition: all 0.25s; pointer-events: none;
-  z-index: 300; white-space: nowrap;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.success { background: var(--sage); }
-.toast.error { background: var(--danger); }
+  /* ── Notes textarea ── */
+  .notes-section { padding: 10px 1rem 0.85rem; border-top: 0.5px solid var(--border); }
+  .notes-section label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 6px; font-weight: 500; }
+  .notes-section textarea {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 9px 11px;
+    resize: none;
+    height: 72px;
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+  .notes-section textarea:focus { border-color: var(--rose); background: #fff; }
+  .notes-section textarea::placeholder { color: var(--ink-faint); }
+
+  /* ── Cost fields ── */
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 1rem 0.85rem; border-top: 0.5px solid var(--border); }
+  .cost-field label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 4px; font-weight: 500; }
+  .cost-field input {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    outline: none;
+    -webkit-appearance: none;
+    transition: border-color 0.15s;
+  }
+  .cost-field input:focus { border-color: var(--rose); background: #fff; }
+  .cost-field input::placeholder { color: var(--ink-faint); }
+
+  /* ── Submit bar ── */
+  .submit-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(255,250,249,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 0.5px solid var(--border-strong);
+    padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom));
+    display: flex;
+    gap: 10px;
+  }
+  .btn-ghost {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border: 0.5px solid var(--border-strong);
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-ghost:active { background: var(--surface-2); }
+  .btn-submit {
+    flex: 1;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: linear-gradient(135deg, var(--rose), #a8445a);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .btn-submit:active { transform: scale(0.98); opacity: 0.9; }
+  .btn-submit:disabled { background: var(--ink-faint); cursor: not-allowed; transform: none; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 100;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--sage); }
+  .toast.error { background: #b94a4a; }
+
+  /* ── Setup screen ── */
+  .setup-screen {
+    position: fixed; inset: 0;
+    background: var(--surface);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .setup-screen .logo { font-size: 2.5rem; margin-bottom: 1rem; }
+  .setup-screen h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--ink); margin-bottom: 0.5rem; }
+  .setup-screen p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 1.5rem; max-width: 320px; }
+  .setup-screen input {
+    width: 100%;
+    max-width: 360px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: #fff;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  .setup-screen input:focus { border-color: var(--rose); }
+  .setup-screen input::placeholder { color: var(--ink-faint); }
+  .setup-screen .btn-save {
+    width: 100%;
+    max-width: 360px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: linear-gradient(135deg, var(--rose), #a8445a);
+    color: #fff;
+    cursor: pointer;
+  }
+  .setup-screen .hint {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 1rem;
+    line-height: 1.6;
+    max-width: 320px;
+  }
+  .setup-screen .hint a { color: var(--rose); text-decoration: none; }
+  .change-url {
+    position: absolute; top: 1rem; right: 1rem;
+    font-size: 11px; color: var(--ink-faint);
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    padding: 4px 8px;
+  }
 </style>
 </head>
 <body>
 
-<div class="app-shell">
-
-<!-- Sidebar -->
-<aside class="sidebar">
-  <div class="sidebar-logo">Venue<em>IQ</em></div>
-  <div class="sidebar-sub">Wedding Decision Dashboard</div>
-
-  <div class="nav-section">Overview</div>
-  <button class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">✦</span> Dashboard</button>
-  <button class="nav-item" onclick="showPage('venues',this)"><span class="nav-icon">🏡</span> All Venues</button>
-  <button class="nav-item" onclick="showPage('budget',this)"><span class="nav-icon">💸</span> Budget</button>
-
-  <div class="nav-section">Insights</div>
-  <button class="nav-item" onclick="showPage('charts',this)"><span class="nav-icon">📊</span> Charts</button>
-  <button class="nav-item" onclick="showPage('shortlist',this)"><span class="nav-icon">⭐</span> Shortlist</button>
-
-  <div class="nav-section">Tools</div>
-  <a class="nav-item" href="index.html" style="text-decoration:none"><span class="nav-icon">📋</span> Add a Venue</a>
-
-  <div class="sidebar-bottom">
-    <button class="sync-btn" onclick="loadData()">↻ Sync from Sheet</button>
-    <div class="sync-time" id="sync-time">Not yet synced</div>
-  </div>
-</aside>
-
-<!-- Main -->
-<main class="main">
-
-  <!-- Dashboard page -->
-  <div class="page active" id="page-dashboard">
-    <div class="page-hdr">
-      <h1>Your Venue <em style="font-family:'Cormorant Garamond',serif;font-style:italic">Overview</em></h1>
-      <p id="dash-sub">Loading your venues…</p>
-    </div>
-    <div id="dash-loading" class="loading"><div class="loading-spinner"></div><p>Fetching from your spreadsheet…</p></div>
-    <div id="dash-content" style="display:none">
-      <div class="stats-row" id="stats-row"></div>
-      <div class="section-card">
-        <div class="sh"><h2 class="inline" style="font-family:'Cormorant Garamond',serif">🏆 Top 3 Venues</h2><span style="font-size:11px;color:var(--ink-faint)">Ranked by score + value</span></div>
-        <div class="podium" id="podium"></div>
-      </div>
-      <div class="section-card">
-        <div class="sh">
-          <h2 class="inline" style="font-family:'Cormorant Garamond',serif">🚨 Risk Flags</h2>
-        </div>
-        <div id="risk-list"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- All Venues page -->
-  <div class="page" id="page-venues">
-    <div class="page-hdr">
-      <h1>All <em style="font-family:'Cormorant Garamond',serif;font-style:italic">Venues</em></h1>
-      <p>Click any row for full details, notes and partner scoring</p>
-    </div>
-    <div class="section-card">
-      <div class="filters-bar">
-        <select class="filter-select" id="f-sort" onchange="renderVenueTable()">
-          <option value="score">Sort: Score</option>
-          <option value="cost">Sort: Cheapest first</option>
-          <option value="value">Sort: Best value</option>
-          <option value="name">Sort: A–Z</option>
-        </select>
-        <select class="filter-select" id="f-risk" onchange="renderVenueTable()">
-          <option value="">All risk levels</option>
-          <option value="Low">Low risk only</option>
-          <option value="Medium">Medium risk</option>
-          <option value="High">High risk</option>
-        </select>
-        <select class="filter-select" id="f-gut" onchange="renderVenueTable()">
-          <option value="">All gut feelings</option>
-          <option value="Loved it">Loved it</option>
-          <option value="Really liked it">Really liked it</option>
-          <option value="It's ok">It's ok</option>
-          <option value="Not feeling it">Not feeling it</option>
-        </select>
-        <button class="filter-clear" onclick="clearFilters()">Clear filters</button>
-      </div>
-      <div class="table-wrap"><table id="venues-table">
-        <thead><tr>
-          <th onclick="setSortCol('name')">Venue</th>
-          <th onclick="setSortCol('score')">Score</th>
-          <th onclick="setSortCol('totalCost')">Total Cost</th>
-          <th onclick="setSortCol('costPerGuest')">Per Guest</th>
-          <th>Gut Feel</th>
-          <th>Risk</th>
-          <th>Status</th>
-        </tr></thead>
-        <tbody id="venues-tbody"></tbody>
-      </table></div>
-    </div>
-  </div>
-
-  <!-- Budget page -->
-  <div class="page" id="page-budget">
-    <div class="page-hdr">
-      <h1>Budget <em style="font-family:'Cormorant Garamond',serif;font-style:italic">Reality Check</em></h1>
-      <p>See exactly where each venue sits against your budget</p>
-    </div>
-    <div class="section-card">
-      <div class="budget-input-row">
-        <label>My total budget</label>
-        <input class="budget-field" type="number" id="budget-input" placeholder="20000" oninput="renderBudget()" />
-        <span style="font-size:13px;color:var(--ink-faint)">£</span>
-      </div>
-      <div class="variance-row" id="budget-variance"></div>
-    </div>
-  </div>
-
-  <!-- Charts page -->
-  <div class="page" id="page-charts">
-    <div class="page-hdr">
-      <h1>Visual <em style="font-family:'Cormorant Garamond',serif;font-style:italic">Comparison</em></h1>
-      <p>Cost vs score at a glance</p>
-    </div>
-    <div class="charts-grid">
-      <div class="chart-card"><h3>Total cost per venue</h3><div class="chart-container"><canvas id="chart-cost"></canvas></div></div>
-      <div class="chart-card"><h3>Score vs cost (best value = top left)</h3><div class="chart-container"><canvas id="chart-scatter"></canvas></div></div>
-    </div>
-  </div>
-
-  <!-- Shortlist page -->
-  <div class="page" id="page-shortlist">
-    <div class="page-hdr">
-      <h1>Your <em style="font-family:'Cormorant Garamond',serif;font-style:italic">Shortlist</em></h1>
-      <p>Venues you've starred — tap any to view full details</p>
-    </div>
-    <div id="shortlist-content"></div>
-  </div>
-
-</main>
+<!-- Setup screen -->
+<div class="setup-screen" id="setup">
+  <div class="logo">💒</div>
+  <h2>One-time setup</h2>
+  <p>Paste your Google Apps Script Web App URL below. This connects the checklist to your venue tracker spreadsheet.</p>
+  <input type="url" id="script-url-input" placeholder="https://script.google.com/macros/s/…/exec" />
+  <button class="btn-save" onclick="saveScriptUrl()">Save & start using</button>
+  <p class="hint">
+    Don't have a script URL yet? Follow the setup instructions in the companion <code>Code.gs</code> file — deploy it as a web app and paste the URL here.<br><br>
+    Your URL is saved locally on this device only.
+  </p>
 </div>
 
-<!-- Mobile nav -->
-<nav class="mobile-nav">
-  <button class="mob-nav-btn active" onclick="showPage('dashboard',this,true)"><span class="mn-icon">✦</span>Overview</button>
-  <button class="mob-nav-btn" onclick="showPage('venues',this,true)"><span class="mn-icon">🏡</span>Venues</button>
-  <button class="mob-nav-btn" onclick="showPage('budget',this,true)"><span class="mn-icon">💸</span>Budget</button>
-  <button class="mob-nav-btn" onclick="showPage('charts',this,true)"><span class="mn-icon">📊</span>Charts</button>
-  <button class="mob-nav-btn" onclick="showPage('shortlist',this,true)"><span class="mn-icon">⭐</span>Shortlist</button>
-  <a class="mob-nav-btn" href="index.html" style="text-decoration:none"><span class="mn-icon">📋</span>Checklist</a>
-</nav>
+<!-- Main app -->
+<div id="app" style="display:none">
+<button class="change-url" onclick="changeUrl()">⚙ Change URL</button>
 
-<!-- Detail overlay -->
-<div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
-  <div class="detail-panel" id="detail-panel">
-    <button class="detail-close" onclick="closeDetailPanel()">✕</button>
-    <div id="detail-content"></div>
+<div class="header">
+  <a href="venue-dashboard.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:1rem;letter-spacing:0.05em;transition:color 0.15s" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">← Dashboard</a></a>
+  <div class="header-tag">Venue Viewing Checklist</div>
+  <h1>Venue<br><em>Notes</em></h1>
+  <p>Fill in as you walk round — submits straight to your spreadsheet</p>
+</div>
+
+<!-- Venue meta -->
+<div class="meta-card">
+  <h2>Venue Details</h2>
+  <div class="field-row">
+    <div class="field">
+      <label>Venue Name *</label>
+      <input type="text" id="v-name" placeholder="e.g. Thornton Manor" />
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>Date Viewed</label>
+      <input type="date" id="v-date" />
+    </div>
+    <div class="field" style="max-width:120px">
+      <label>Guests (day)</label>
+      <input type="number" id="v-guests" placeholder="80" />
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>Location</label>
+      <input type="text" id="v-location" placeholder="e.g. Cheshire" />
+    </div>
+  </div>
+  <div style="margin-top:0.85rem">
+    <div class="gut-label" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;margin-bottom:8px;">Score /10</div>
+    <div class="score-row" id="score-btns">
+      <span class="score-label">Pick:</span>
+    </div>
   </div>
 </div>
+
+<!-- Progress -->
+<div class="progress-wrap">
+  <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar"></div></div>
+  <div class="progress-text" id="prog-text">0 / 0</div>
+</div>
+
+<!-- Sections -->
+<div class="sections" id="sections-wrap"></div>
+
+</div><!-- /app -->
 
 <div class="toast" id="toast"></div>
 
+<div class="submit-bar" id="submit-bar" style="display:none">
+  <button class="btn-ghost" onclick="resetForm()">Reset</button>
+  <button class="btn-submit" id="submit-btn" onclick="submitToSheet()">Submit to Spreadsheet</button>
+</div>
+
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvLjmNGsOvJqKqpfijLrf37RHqudfxHnEHjER9ETjS8KpBrYoUujS336zSdmpMaiZl/exec';
-const BUDGET_KEY = 'venue_budget';
+const STORAGE_KEY = 'venue_script_url';
+const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvLjmNGsOvJqKqpfijLrf37RHqudfxHnEHjER9ETjS8KpBrYoUujS336zSdmpMaiZl/exec';
+let scriptUrl = '';
+let selectedScore = null;
+let gutFeel = '';
+let totalItems = 0;
+let checkedItems = 0;
 
-let venues = [];
-let sortCol = 'score';
-let sortAsc = false;
-let chartCost = null;
-let chartScatter = null;
+const sections = [
+  { id:'basics', icon:'💰', color:'rose', title:'Pricing & Basics', items:[
+    {id:'hirecost', l:'Hire cost confirmed'},
+    {id:'minspend', l:'Minimum spend understood', h:'Catering + drinks combined or separate?'},
+    {id:'deposit', l:'Deposit & payment schedule confirmed', h:'How much upfront? When is balance due?'},
+    {id:'vat', l:'VAT & service charges asked about', h:'Always check — adds up fast'},
+    {id:'peakoff', l:'Peak vs off-peak pricing confirmed'},
+    {id:'corkage', l:'Corkage fee clarified'},
+  ]},
+  { id:'food', icon:'🍽️', color:'rose', title:'Food & Drink', items:[
+    {id:'catering_type', l:'Catering type confirmed (in-house / external)'},
+    {id:'costperhead', l:'Cost per head confirmed'},
+    {id:'dietary', l:'Dietary flexibility confirmed', h:'Vegan, allergies, kids menu?'},
+    {id:'tasting', l:'Tasting session — included or charged?'},
+    {id:'eveningfood', l:'Evening food options & cost confirmed'},
+    {id:'bar', l:'Bar type confirmed (cash / open / packages)'},
+    {id:'barclose', l:'Bar closing time confirmed'},
+  ]},
+  { id:'logistics', icon:'⏰', color:'sage', title:'Timings & Logistics', items:[
+    {id:'access', l:'Earliest setup/access time confirmed'},
+    {id:'finish', l:'Latest finish time & curfew confirmed'},
+    {id:'extend', l:'Cost to extend per hour confirmed'},
+    {id:'exclusive', l:'Exclusive hire confirmed', h:'How many other weddings same day?'},
+    {id:'rain', l:'Wet weather backup plan confirmed', h:'Critical for outdoor / marquee'},
+    {id:'parking', l:'Parking situation confirmed', h:'Free, charged, capacity?'},
+    {id:'disabled', l:'Accessibility for all guests confirmed'},
+  ]},
+  { id:'suppliers', icon:'🎶', color:'sage', title:'Suppliers & Restrictions', items:[
+    {id:'supplist', l:'Approved supplier list — mandatory or preferred?'},
+    {id:'djband', l:'DJ / band restrictions confirmed'},
+    {id:'photo', l:'Photographer restrictions confirmed', h:'Some venues charge an access fee'},
+    {id:'decor', l:'Decor restrictions confirmed', h:'Confetti, candles, fireworks — ask all'},
+    {id:'ownalc', l:'Bringing own alcohol — allowed?'},
+  ]},
+  { id:'stays', icon:'🛏️', color:'gold', title:'Accommodation', items:[
+    {id:'rooms', l:'Number of on-site rooms confirmed'},
+    {id:'included', l:'Rooms included or discounted?'},
+    {id:'bridal', l:'Bridal suite — included in hire cost?'},
+    {id:'checkout', l:'Late checkout available?'},
+    {id:'nearbyhotels', l:'Nearby hotels for guests noted'},
+  ]},
+  { id:'sneaky', icon:'🚨', color:'rose', title:'Hidden Costs Checklist', items:[
+    {id:'chairs', l:'Tables & chairs included?', h:'Seriously — some venues charge per item'},
+    {id:'linen', l:'Table linen & napkins included?'},
+    {id:'glass', l:'Glassware & cutlery included?'},
+    {id:'staff', l:'Staff & serving fees included?'},
+    {id:'cakefee', l:'Cake cutting fee asked about?', h:'Yes, this is real. Always ask.'},
+    {id:'sound', l:'Sound system & microphones included?'},
+    {id:'lighting', l:'Lighting rig included?', h:'Basic vs uplighting — what\'s standard?'},
+    {id:'cleaning', l:'Cleaning fee on top?'},
+    {id:'security', l:'Security required & cost confirmed?'},
+    {id:'generator', l:'Generator needed? (outdoor/marquee)'},
+    {id:'toilets', l:'Toilets — permanent or hired in?'},
+  ]},
+  { id:'vibe', icon:'✨', color:'gold', title:'Vibe Check', items:[
+    {id:'picture', l:'Can I picture the day here?'},
+    {id:'easy', l:'Does it feel easy or like hard work?'},
+    {id:'forcing', l:'Are we forcing it because it looks nice?'},
+    {id:'coord', l:'Did the coordinator feel warm & helpful?'},
+    {id:'gotcha', l:'Asked: "What do couples usually get caught out by?"', h:'The answer tells you everything'},
+  ]},
+];
 
-// ── Navigation ────────────────────────────────────────────────────────────
-function showPage(id, btn, isMobile) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+const costFields = [
+  { id:'hire_cost', label:'Hire Cost (£)', placeholder:'3500' },
+  { id:'cost_per_head', label:'Cost per Head (£)', placeholder:'65' },
+  { id:'drinks_est', label:'Drinks Estimate (£)', placeholder:'1200' },
+  { id:'extras', label:'Extras (£)', placeholder:'400' },
+];
 
-  if (isMobile) {
-    document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
-  } else {
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+const checkState = {};
+
+function init() {
+  scriptUrl = localStorage.getItem(STORAGE_KEY) || DEFAULT_SCRIPT_URL;
+  localStorage.setItem(STORAGE_KEY, scriptUrl);
+  showApp();
+
+  // Score buttons
+  const sbWrap = document.getElementById('score-btns');
+  for (let i = 1; i <= 10; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'score-btn';
+    btn.textContent = i;
+    btn.onclick = () => setScore(i);
+    sbWrap.appendChild(btn);
   }
-  if (btn) btn.classList.add('active');
 
-  if (id === 'charts') renderCharts();
-  if (id === 'shortlist') renderShortlist();
-  if (id === 'budget') renderBudget();
+  // Set today's date
+  document.getElementById('v-date').value = new Date().toISOString().slice(0,10);
+
+  buildSections();
+  updateProgress();
 }
 
-// ── Load data from Apps Script ────────────────────────────────────────────
-async function loadData() {
-  document.getElementById('dash-loading').style.display = 'block';
-  document.getElementById('dash-content').style.display = 'none';
+function showApp() {
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('submit-bar').style.display = 'flex';
+}
+
+function saveScriptUrl() {
+  const val = document.getElementById('script-url-input').value.trim();
+  if (!val.startsWith('https://script.google.com')) {
+    showToast('Please enter a valid Apps Script URL', 'error'); return;
+  }
+  localStorage.setItem(STORAGE_KEY, val);
+  scriptUrl = val;
+  showApp();
+}
+
+function changeUrl() {
+  document.getElementById('script-url-input').value = scriptUrl;
+  document.getElementById('setup').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+}
+
+function setScore(n) {
+  selectedScore = n;
+  document.querySelectorAll('.score-btn').forEach((b,i) => b.classList.toggle('sel', i+1 === n));
+}
+
+function buildSections() {
+  const wrap = document.getElementById('sections-wrap');
+  sections.forEach(sec => {
+    checkState[sec.id] = {};
+    sec.items.forEach(it => checkState[sec.id][it.id] = false);
+    totalItems += sec.items.length;
+
+    const div = document.createElement('div');
+    div.className = 'section';
+    div.id = 'sec-' + sec.id;
+
+    const hdr = document.createElement('div');
+    hdr.className = 'sec-hdr';
+    hdr.innerHTML = `
+      <div class="sec-icon ${sec.color}">${sec.icon}</div>
+      <div class="sec-title-wrap">
+        <div class="sec-title">${sec.title}</div>
+        <div class="sec-prog" id="sprog-${sec.id}">0 of ${sec.items.length}</div>
+      </div>
+      <div class="sec-chevron">&#9654;</div>`;
+    hdr.onclick = () => toggleSection(sec.id);
+    div.appendChild(hdr);
+
+    const body = document.createElement('div');
+    body.className = 'sec-body';
+
+    // Cost fields for basics section
+    if (sec.id === 'basics') {
+      const cg = document.createElement('div');
+      cg.className = 'cost-grid';
+      costFields.forEach(cf => {
+        const f = document.createElement('div');
+        f.className = 'cost-field';
+        f.innerHTML = `<label>${cf.label}</label><input type="number" id="cf-${cf.id}" placeholder="${cf.placeholder}" inputmode="decimal">`;
+        cg.appendChild(f);
+      });
+      body.appendChild(cg);
+    }
+
+    sec.items.forEach(it => {
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.id = `item-${sec.id}-${it.id}`;
+      item.innerHTML = `
+        <div class="check-wrap" id="chk-${sec.id}-${it.id}" onclick="toggleItem('${sec.id}','${it.id}')"></div>
+        <div class="item-content" onclick="toggleItem('${sec.id}','${it.id}')">
+          <div class="item-label">${it.l}</div>
+          ${it.h ? `<div class="item-hint">${it.h}</div>` : ''}
+        </div>`;
+      body.appendChild(item);
+    });
+
+    // Gut feeling for vibe section
+    if (sec.id === 'vibe') {
+      const gw = document.createElement('div');
+      gw.className = 'gut-wrap';
+      gw.innerHTML = `<div class="gut-label">Overall gut feeling</div>
+        <div class="gut-options">
+          ${['Loved it','Really liked it','It\'s ok','Not feeling it','Hard no'].map(g =>
+            `<button class="gut-btn" onclick="setGut('${g}',this)">${g}</button>`).join('')}
+        </div>`;
+      body.appendChild(gw);
+    }
+
+    // Notes for every section
+    const nw = document.createElement('div');
+    nw.className = 'notes-section';
+    nw.innerHTML = `<label>Section notes</label>
+      <textarea id="notes-${sec.id}" placeholder="Anything specific from this section…"></textarea>`;
+    body.appendChild(nw);
+
+    div.appendChild(body);
+    wrap.appendChild(div);
+  });
+
+  // Global notes
+  const gn = document.createElement('div');
+  gn.style.cssText = 'padding:0 1rem;margin-bottom:1rem';
+  gn.innerHTML = `<div class="section"><div class="notes-section" style="border:none">
+    <label>Overall notes & impressions</label>
+    <textarea id="notes-overall" style="height:100px" placeholder="First impressions, things to follow up, anything that stood out…"></textarea>
+  </div></div>`;
+  document.getElementById('sections-wrap').appendChild(gn);
+}
+
+function toggleSection(id) {
+  const sec = document.getElementById('sec-' + id);
+  sec.classList.toggle('open');
+}
+
+function toggleItem(secId, itemId) {
+  checkState[secId][itemId] = !checkState[secId][itemId];
+  const checked = checkState[secId][itemId];
+  document.getElementById(`item-${secId}-${itemId}`).classList.toggle('checked', checked);
+  document.getElementById(`chk-${secId}-${itemId}`).classList.toggle('checked', checked);
+  const done = Object.values(checkState[secId]).filter(Boolean).length;
+  const total = sections.find(s => s.id === secId).items.length;
+  document.getElementById(`sprog-${secId}`).textContent = `${done} of ${total}`;
+  updateProgress();
+}
+
+function updateProgress() {
+  checkedItems = 0;
+  sections.forEach(s => {
+    checkedItems += Object.values(checkState[s.id]).filter(Boolean).length;
+  });
+  const pct = totalItems ? Math.round(checkedItems / totalItems * 100) : 0;
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = `${checkedItems} / ${totalItems}`;
+}
+
+function setGut(g, btn) {
+  gutFeel = g;
+  document.querySelectorAll('.gut-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function resetForm() {
+  if (!confirm('Clear all fields and start fresh?')) return;
+  sections.forEach(s => s.items.forEach(it => {
+    checkState[s.id][it.id] = false;
+    document.getElementById(`item-${s.id}-${it.id}`).classList.remove('checked');
+    document.getElementById(`chk-${s.id}-${it.id}`).classList.remove('checked');
+    document.getElementById(`sprog-${s.id}`).textContent = `0 of ${s.items.length}`;
+  }));
+  document.querySelectorAll('textarea').forEach(t => t.value = '');
+  document.querySelectorAll('.score-btn').forEach(b => b.classList.remove('sel'));
+  document.querySelectorAll('.gut-btn').forEach(b => b.classList.remove('sel'));
+  document.getElementById('v-name').value = '';
+  document.getElementById('v-location').value = '';
+  document.getElementById('v-guests').value = '';
+  document.getElementById('v-date').value = new Date().toISOString().slice(0,10);
+  costFields.forEach(cf => { const el = document.getElementById('cf-' + cf.id); if(el) el.value = ''; });
+  selectedScore = null; gutFeel = '';
+  updateProgress();
+}
+
+async function submitToSheet() {
+  const name = document.getElementById('v-name').value.trim();
+  if (!name) { showToast('Please enter a venue name', 'error'); document.getElementById('v-name').focus(); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Collect checked items per section
+  const checkedPerSection = {};
+  const notesPerSection = {};
+  sections.forEach(s => {
+    const doneItems = s.items.filter(it => checkState[s.id][it.id]).map(it => it.l);
+    checkedPerSection[s.id] = doneItems.join('; ');
+    const el = document.getElementById('notes-' + s.id);
+    notesPerSection[s.id] = el ? el.value.trim() : '';
+  });
+
+  const payload = {
+    // Venue Comparison sheet
+    venueName: name,
+    dateViewed: document.getElementById('v-date').value,
+    hireCost: document.getElementById('cf-hire_cost').value || 0,
+    costPerHead: document.getElementById('cf-cost_per_head').value || 0,
+    guestCount: document.getElementById('v-guests').value || 0,
+    drinksEst: document.getElementById('cf-drinks_est').value || 0,
+    extras: document.getElementById('cf-extras').value || 0,
+    score: selectedScore || '',
+    shortlist: '',
+    hiddenCostNotes: checkedPerSection['sneaky'] || '',
+
+    // Venue Notes sheet
+    location: document.getElementById('v-location').value.trim(),
+    gutFeeling: gutFeel,
+    overallNotes: (document.getElementById('notes-overall') || {}).value || '',
+
+    // Per-section notes & checks
+    basicsChecked: checkedPerSection['basics'],
+    basicsNotes: notesPerSection['basics'],
+    foodChecked: checkedPerSection['food'],
+    foodNotes: notesPerSection['food'],
+    logisticsChecked: checkedPerSection['logistics'],
+    logisticsNotes: notesPerSection['logistics'],
+    suppliersChecked: checkedPerSection['suppliers'],
+    suppliersNotes: notesPerSection['suppliers'],
+    staysChecked: checkedPerSection['stays'],
+    staysNotes: notesPerSection['stays'],
+    sneakyChecked: checkedPerSection['sneaky'],
+    sneakyNotes: notesPerSection['sneaky'],
+    vibeChecked: checkedPerSection['vibe'],
+    vibeNotes: notesPerSection['vibe'],
+  };
+
   try {
-    const res = await fetch(SCRIPT_URL + '?action=getData');
-    const data = await res.json();
-    if (data.status !== 'success') throw new Error(data.message);
-    venues = data.venues || [];
-    renderDashboard();
-    renderVenueTable();
-    renderBudget();
-    document.getElementById('sync-time').textContent = 'Synced ' + new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
-    showToast('Synced ' + venues.length + ' venue' + (venues.length!==1?'s':''), 'success');
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch(e) { data = { status: res.ok ? 'success' : 'error' }; }
+
+    if (data.status === 'success' || res.ok) {
+      showToast('Submitted to spreadsheet!', 'success');
+      btn.textContent = 'Submitted ✓';
+      setTimeout(() => { btn.textContent = 'Submit to Spreadsheet'; btn.disabled = false; }, 3000);
+    } else {
+      throw new Error(data.message || 'Unknown error');
+    }
   } catch(err) {
-    document.getElementById('dash-loading').innerHTML = `<div class="empty-state"><div class="es-icon">⚠️</div><p>Couldn't load from spreadsheet.<br>${err.message}<br><br>Make sure you've deployed Code.gs v3 and are running this from GitHub Pages.</p></div>`;
-    showToast('Sync failed — check console', 'error');
+    console.error(err);
+    showToast('Error — check your script URL', 'error');
+    btn.textContent = 'Submit to Spreadsheet';
+    btn.disabled = false;
   }
 }
-
-// ── Dashboard ─────────────────────────────────────────────────────────────
-function renderDashboard() {
-  document.getElementById('dash-loading').style.display = 'none';
-  document.getElementById('dash-content').style.display = 'block';
-
-  if (!venues.length) {
-    document.getElementById('dash-content').innerHTML = `<div class="empty-state"><div class="es-icon">💒</div><p>No venues yet.<br>Submit your first viewing using the <a href="venue-checklist.html">Venue Checklist</a>.</p></div>`;
-    return;
-  }
-
-  document.getElementById('dash-sub').textContent = venues.length + ' venue' + (venues.length!==1?'s':'') + ' viewed';
-
-  const withScores = venues.filter(v => v.score > 0);
-  const avgScore = withScores.length ? (withScores.reduce((s,v)=>s+v.score,0)/withScores.length).toFixed(1) : '—';
-  const costs = venues.filter(v=>v.totalCost>0).map(v=>v.totalCost);
-  const minCost = costs.length ? Math.min(...costs) : 0;
-  const maxCost = costs.length ? Math.max(...costs) : 0;
-  const topVenue = withScores.sort((a,b)=>b.score-a.score)[0];
-
-  const statsEl = document.getElementById('stats-row');
-  statsEl.innerHTML = `
-    <div class="stat-card"><div class="s-label">Venues Viewed</div><div class="s-val">${venues.length}</div></div>
-    <div class="stat-card"><div class="s-label">Avg Score</div><div class="s-val">${avgScore}</div><div class="s-sub">out of 10</div></div>
-    <div class="stat-card"><div class="s-label">Cost Range</div><div class="s-val">${fmt(minCost)}</div><div class="s-sub">to ${fmt(maxCost)}</div></div>
-    ${topVenue ? `<div class="stat-card highlight"><div class="s-label">Top Scored</div><div class="s-val" style="font-size:1.3rem">${topVenue.name}</div><div class="s-sub">${topVenue.score}/10</div></div>` : ''}
-  `;
-
-  renderPodium();
-  renderRiskList();
-}
-
-function renderPodium() {
-  const ranked = rankVenues(venues).slice(0, 3);
-  const podium = document.getElementById('podium');
-  if (!ranked.length) { podium.innerHTML = '<p style="color:var(--ink-faint);font-size:13px;grid-column:1/-1">No scored venues yet.</p>'; return; }
-
-  const order = ranked.length >= 2 ? [ranked[1], ranked[0], ranked[2] || null] : [null, ranked[0], null];
-  const trophies = ['🥈','🥇','🥉'];
-  const labels = ['2nd','1st','3rd'];
-
-  podium.innerHTML = order.map((v, i) => {
-    if (!v) return `<div class="podium-slot"></div>`;
-    return `<div class="podium-slot" onclick="openDetail('${esc(v.name)}')">
-      <div class="pod-rank">${labels[i]}</div>
-      <div class="pod-card ${i===1?'gold-card':''}">
-        <div class="pod-trophy">${trophies[i]}</div>
-        <div class="pod-name">${v.name}</div>
-        <div class="pod-score">★ ${v.score}/10</div>
-        <div class="pod-cost">${v.totalCost>0?fmt(v.totalCost):'Cost TBC'}</div>
-        <div class="pod-gut">${v.notes.gutFeeling||''}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderRiskList() {
-  const highRisk = venues.filter(v => v.riskLevel === 'High' || v.riskFlags.length > 0);
-  const el = document.getElementById('risk-list');
-  if (!highRisk.length) {
-    el.innerHTML = '<p style="font-size:13px;color:var(--ink-faint)">No major risk flags detected yet.</p>';
-    return;
-  }
-  el.innerHTML = highRisk.map(v => `
-    <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--border)">
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px">${v.name}</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          ${v.riskFlags.map(f=>`<span style="font-size:11px;background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px">${f}</span>`).join('')}
-        </div>
-      </div>
-      <span class="risk-badge ${v.riskLevel}">${v.riskLevel} risk</span>
-    </div>
-  `).join('');
-}
-
-// ── Venues table ──────────────────────────────────────────────────────────
-function renderVenueTable() {
-  if (!venues.length) {
-    document.getElementById('venues-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--ink-faint)">No venues yet</td></tr>`;
-    return;
-  }
-
-  const sortBy = document.getElementById('f-sort').value;
-  const filterRisk = document.getElementById('f-risk').value;
-  const filterGut = document.getElementById('f-gut').value;
-
-  let filtered = venues.slice();
-  if (filterRisk) filtered = filtered.filter(v => v.riskLevel === filterRisk);
-  if (filterGut) filtered = filtered.filter(v => (v.notes.gutFeeling||'').includes(filterGut));
-
-  filtered.sort((a,b) => {
-    if (sortBy==='cost') return (a.totalCost||999999)-(b.totalCost||999999);
-    if (sortBy==='value') return valueScore(b)-valueScore(a);
-    if (sortBy==='name') return a.name.localeCompare(b.name);
-    return b.score-a.score;
-  });
-
-  const statusMap = {'★':'★','~':'~','✗':'✗','':'—'};
-  const tbody = document.getElementById('venues-tbody');
-  tbody.innerHTML = filtered.map(v => {
-    const sc = v.score;
-    const spClass = sc>=8?'high':sc>=6?'mid':sc>0?'low':'none';
-    return `<tr onclick="openDetail('${esc(v.name)}')">
-      <td class="td-name">${v.name}<br><span style="font-size:11px;font-weight:400;color:var(--ink-faint)">${v.notes.location||''}</span></td>
-      <td><span class="score-pill ${spClass}">${sc||'—'}</span></td>
-      <td class="td-cost">${v.totalCost>0?fmt(v.totalCost):'—'}</td>
-      <td class="td-cost">${v.costPerGuest>0?fmt(v.costPerGuest):'—'}</td>
-      <td style="font-size:12px">${gutEmoji(v.notes.gutFeeling)} ${v.notes.gutFeeling||'—'}</td>
-      <td><span class="risk-badge ${v.riskLevel}">${v.riskLevel}</span></td>
-      <td>
-        <button class="status-btn" onclick="event.stopPropagation();cycleStatus('${esc(v.name)}')" title="Tag this venue">${v.myStatus||'○'}</button>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-function setSortCol(col) {
-  document.getElementById('f-sort').value = col==='totalCost'?'cost':col==='score'?'score':'name';
-  renderVenueTable();
-}
-
-function clearFilters() {
-  document.getElementById('f-sort').value = 'score';
-  document.getElementById('f-risk').value = '';
-  document.getElementById('f-gut').value = '';
-  renderVenueTable();
-}
-
-async function cycleStatus(name) {
-  const v = venues.find(x=>x.name===name);
-  if (!v) return;
-  const cycle = ['','★','~','✗'];
-  const idx = cycle.indexOf(v.myStatus||'');
-  v.myStatus = cycle[(idx+1)%cycle.length];
-  renderVenueTable();
-  renderShortlist();
-  try {
-    await fetch(SCRIPT_URL + `?action=updateStatus&venue=${encodeURIComponent(name)}&field=myStatus&value=${encodeURIComponent(v.myStatus)}`);
-  } catch(e){}
-}
-
-// ── Budget page ───────────────────────────────────────────────────────────
-function renderBudget() {
-  const budget = parseFloat(document.getElementById('budget-input')?.value) || parseFloat(localStorage.getItem(BUDGET_KEY)) || 0;
-  if (document.getElementById('budget-input') && budget) {
-    document.getElementById('budget-input').value = budget;
-    localStorage.setItem(BUDGET_KEY, budget);
-  }
-
-  const el = document.getElementById('budget-variance');
-  if (!venues.length) { el.innerHTML = '<p style="color:var(--ink-faint);font-size:13px">No venues loaded yet.</p>'; return; }
-
-  const sorted = venues.filter(v=>v.totalCost>0).sort((a,b)=>a.totalCost-b.totalCost);
-  el.innerHTML = sorted.map(v => {
-    const diff = budget ? v.totalCost - budget : null;
-    const over = diff !== null && diff > 0;
-    const cls = diff === null ? '' : over ? 'over' : 'under';
-    return `<div class="variance-card ${cls}">
-      <div class="vc-name">${v.name}</div>
-      <div class="vc-total">${fmt(v.totalCost)}</div>
-      ${diff !== null ? `<div class="vc-var">${over?'▲ '+fmt(diff)+' over':'▼ '+fmt(Math.abs(diff))+' under'} budget</div>` : ''}
-      <div style="font-size:11px;color:var(--ink-faint);margin-top:4px">${v.guestCount?v.guestCount+' guests':''} ${v.costPerGuest>0?'· '+fmt(v.costPerGuest)+'/guest':''}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── Charts ────────────────────────────────────────────────────────────────
-function renderCharts() {
-  if (!venues.length) return;
-  const withCost = venues.filter(v=>v.totalCost>0);
-
-  const palette = withCost.map((v,i) => {
-    const hue = 330 + i*25;
-    return `hsl(${hue},55%,65%)`;
-  });
-
-  // Cost bar
-  if (chartCost) chartCost.destroy();
-  const ctxCost = document.getElementById('chart-cost').getContext('2d');
-  chartCost = new Chart(ctxCost, {
-    type: 'bar',
-    data: {
-      labels: withCost.map(v=>v.name),
-      datasets:[{ data: withCost.map(v=>v.totalCost), backgroundColor: palette, borderRadius: 6, borderSkipped: false }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false },
-        tooltip: { callbacks: { label: ctx => '£'+ctx.raw.toLocaleString('en-GB') } }
-      },
-      scales: {
-        y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { callback: v=>'£'+Math.round(v/1000)+'k', font:{size:11} } },
-        x: { grid: { display: false }, ticks: { font:{size:11} } }
-      }
-    }
-  });
-
-  // Scatter cost vs score
-  if (chartScatter) chartScatter.destroy();
-  const withBoth = venues.filter(v=>v.totalCost>0&&v.score>0);
-  const ctxSc = document.getElementById('chart-scatter').getContext('2d');
-  chartScatter = new Chart(ctxSc, {
-    type: 'scatter',
-    data: {
-      datasets:[{
-        data: withBoth.map(v=>({x:v.totalCost, y:v.score, name:v.name})),
-        backgroundColor: 'rgba(200,104,122,0.7)', pointRadius: 8, pointHoverRadius: 10
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: {
-          label: ctx => `${ctx.raw.name}: ${fmt(ctx.raw.x)} · Score ${ctx.raw.y}`
-        }}
-      },
-      scales: {
-        x: { title: { display:true, text:'Total Cost (£)', font:{size:11} }, ticks:{ callback:v=>'£'+Math.round(v/1000)+'k', font:{size:10} }, grid:{color:'rgba(0,0,0,0.05)'} },
-        y: { title: { display:true, text:'Score /10', font:{size:11} }, min:0, max:10, grid:{color:'rgba(0,0,0,0.05)'}, ticks:{font:{size:10}} }
-      }
-    }
-  });
-}
-
-// ── Shortlist ─────────────────────────────────────────────────────────────
-function renderShortlist() {
-  const starred = venues.filter(v=>v.myStatus==='★');
-  const el = document.getElementById('shortlist-content');
-  if (!starred.length) {
-    el.innerHTML = `<div class="empty-state"><div class="es-icon">⭐</div><p>No shortlisted venues yet.<br>Go to All Venues and tap the ○ button on your favourites to mark them ★</p></div>`;
-    return;
-  }
-  el.innerHTML = starred.map(v=>`
-    <div class="section-card" onclick="openDetail('${esc(v.name)}')" style="cursor:pointer">
-      <div class="sh">
-        <h2 class="inline" style="font-family:'Cormorant Garamond',serif">${v.name}</h2>
-        <span class="score-pill ${v.score>=8?'high':v.score>=6?'mid':'low'}">${v.score||'—'}</span>
-      </div>
-      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-soft)">
-        ${v.totalCost?`<span>${fmt(v.totalCost)} total</span>`:''}
-        ${v.costPerGuest?`<span>${fmt(v.costPerGuest)}/guest</span>`:''}
-        ${v.notes.gutFeeling?`<span>${gutEmoji(v.notes.gutFeeling)} ${v.notes.gutFeeling}</span>`:''}
-        <span class="risk-badge ${v.riskLevel}">${v.riskLevel} risk</span>
-      </div>
-      ${v.notes.overallNotes?`<p style="font-size:12px;color:var(--ink-faint);margin-top:8px;line-height:1.5">${v.notes.overallNotes.slice(0,160)}${v.notes.overallNotes.length>160?'…':''}</p>`:''}
-    </div>
-  `).join('');
-}
-
-// ── Detail panel ──────────────────────────────────────────────────────────
-function openDetail(name) {
-  const v = venues.find(x=>x.name===name);
-  if (!v) return;
-
-  const scoreDiff = v.score && v.partnerScore ? Math.abs(v.score - v.partnerScore) : null;
-  const notes = v.notes;
-
-  const sectionNotes = [
-    {label:'Pricing & Basics', conf: notes.basicsConfirmed, note: notes.basicsNotes},
-    {label:'Food & Drink', conf: notes.foodConfirmed, note: notes.foodNotes},
-    {label:'Timings & Logistics', conf: notes.logisticsConf, note: notes.logisticsNotes},
-    {label:'Suppliers', conf: notes.suppliersConf, note: notes.suppliersNotes},
-    {label:'Accommodation', conf: notes.staysConf, note: notes.staysNotes},
-    {label:'Hidden Costs', conf: notes.hiddenConf, note: notes.hiddenNotes},
-    {label:'Vibe Check', conf: notes.vibeConf, note: notes.vibeNotes},
-  ].filter(s => s.conf || s.note);
-
-  document.getElementById('detail-content').innerHTML = `
-    <div class="detail-name">${v.name}</div>
-    <div class="detail-meta">${v.notes.location||''} ${v.dateViewed?'· Viewed '+v.dateViewed:''}</div>
-
-    <div class="detail-costs">
-      <div class="detail-cost-item"><div class="dc-label">Hire Cost</div><div class="dc-val">${fmt(v.hireCost)}</div></div>
-      <div class="detail-cost-item"><div class="dc-label">Catering</div><div class="dc-val">${fmt(v.costPerHead*v.guestCount)}</div></div>
-      <div class="detail-cost-item"><div class="dc-label">Drinks</div><div class="dc-val">${fmt(v.drinksEst)}</div></div>
-      <div class="detail-cost-item"><div class="dc-label">Extras</div><div class="dc-val">${fmt(v.extras)}</div></div>
-      <div class="detail-cost-item total"><div class="dc-label">Total Est.</div><div class="dc-val">${fmt(v.totalCost)}</div></div>
-      <div class="detail-cost-item"><div class="dc-label">Per Guest</div><div class="dc-val">${fmt(v.costPerGuest)}</div></div>
-    </div>
-
-    ${v.riskFlags.length?`<div class="detail-flags">${v.riskFlags.map(f=>`<span class="risk-badge High">${f}</span>`).join('')}</div>`:''}
-
-    <div class="partner-row">
-      <label>Your score</label>
-      <span style="font-size:1.1rem;font-weight:500">${v.score||'—'}</span>
-      <label style="margin-left:12px">Partner score</label>
-      <input type="number" min="1" max="10" value="${v.partnerScore||''}" placeholder="—"
-        onchange="savePartnerScore('${esc(v.name)}',this.value)" id="ps-input" />
-      ${scoreDiff!==null?`<span class="score-gap ${scoreDiff>=3?'warning':'ok'}">${scoreDiff>=3?'⚠ '+scoreDiff+' pt gap':'Aligned'}</span>`:''}
-    </div>
-
-    ${sectionNotes.map(s=>`
-      <div class="detail-section">
-        <h4>${s.label}</h4>
-        ${s.conf?`<p style="font-size:12px;color:var(--ink-faint);margin-bottom:4px">✓ ${s.conf}</p>`:''}
-        ${s.note?`<div class="detail-notes">${s.note}</div>`:''}
-      </div>
-    `).join('')}
-
-    ${notes.overallNotes?`<div class="detail-section"><h4>Overall Notes</h4><div class="detail-notes">${notes.overallNotes}</div></div>`:''}
-
-    <div class="detail-section">
-      <h4>Follow-up questions</h4>
-      <textarea class="followup-area" id="followup-area" placeholder="Things to chase up with the venue…">${v.followUpQs||''}</textarea>
-      <button class="save-detail-btn" onclick="saveFollowUp('${esc(v.name)}')">Save follow-ups</button>
-    </div>
-  `;
-
-  document.getElementById('detail-overlay').classList.add('open');
-}
-
-function closeDetail(e) {
-  if (e.target === document.getElementById('detail-overlay')) closeDetailPanel();
-}
-function closeDetailPanel() {
-  document.getElementById('detail-overlay').classList.remove('open');
-}
-
-async function savePartnerScore(name, val) {
-  const v = venues.find(x=>x.name===name);
-  if (v) { v.partnerScore = parseFloat(val)||0; renderVenueTable(); }
-  try { await fetch(SCRIPT_URL+`?action=updateStatus&venue=${encodeURIComponent(name)}&field=partnerScore&value=${encodeURIComponent(val)}`); showToast('Partner score saved','success'); } catch(e){}
-}
-
-async function saveFollowUp(name) {
-  const val = document.getElementById('followup-area').value;
-  const v = venues.find(x=>x.name===name);
-  if (v) v.followUpQs = val;
-  try {
-    await fetch(SCRIPT_URL+`?action=updateStatus&venue=${encodeURIComponent(name)}&field=followUpQs&value=${encodeURIComponent(val)}`);
-    showToast('Follow-ups saved to sheet','success');
-  } catch(e){ showToast('Could not save — check script URL','error'); }
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────
-function rankVenues(vs) {
-  return vs.filter(v=>v.score>0).map(v=>({
-    ...v, _rank: v.score * 0.6 + valueScore(v) * 0.4
-  })).sort((a,b)=>b._rank-a._rank);
-}
-
-function valueScore(v) {
-  if (!v.totalCost || !v.score) return 0;
-  return (v.score / (v.totalCost / 1000)) * 10;
-}
-
-function fmt(n) {
-  if (!n) return '—';
-  return '£' + Math.round(n).toLocaleString('en-GB');
-}
-
-function gutEmoji(g) {
-  if (!g) return '';
-  if (g.includes('Loved')) return '❤️';
-  if (g.includes('liked')) return '😊';
-  if (g.includes('ok')) return '🤔';
-  if (g.includes('feeling')) return '😐';
-  if (g.includes('no')) return '❌';
-  return '';
-}
-
-function esc(s) { return (s||'').replace(/'/g,"\\'"); }
 
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show ' + type;
-  setTimeout(()=>t.className='toast',2800);
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem(BUDGET_KEY);
-  if (saved && document.getElementById('budget-input')) {
-    document.getElementById('budget-input').value = saved;
-  }
-  loadData();
-});
+init();
 </script>
 </body>
 </html>
