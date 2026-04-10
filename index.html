@@ -534,6 +534,7 @@
 <div class="toast" id="toast"></div>
 
 <div class="submit-bar" id="submit-bar" style="display:none">
+  <a href="venue-dashboard.html" class="btn-ghost" style="text-decoration:none;display:flex;align-items:center;gap:5px">← Dashboard</a>
   <button class="btn-ghost" onclick="resetForm()">Reset</button>
   <button class="btn-submit" id="submit-btn" onclick="submitToSheet()">Submit to Spreadsheet</button>
 </div>
@@ -835,6 +836,9 @@ async function submitToSheet() {
     extras: document.getElementById('cf-extras').value || 0,
     score: selectedScore || '',
     shortlist: '',
+    myStatus: '',
+    partnerScore: '',
+    followUpQs: '',
     hiddenCostNotes: checkedPerSection['sneaky'] || '',
 
     // Venue Notes sheet
@@ -869,9 +873,9 @@ async function submitToSheet() {
     try { data = JSON.parse(text); } catch(e) { data = { status: res.ok ? 'success' : 'error' }; }
 
     if (data.status === 'success' || res.ok) {
-      showToast('Submitted to spreadsheet!', 'success');
+      showToast('Submitted! Heading back to dashboard…', 'success');
       btn.textContent = 'Submitted ✓';
-      setTimeout(() => { btn.textContent = 'Submit to Spreadsheet'; btn.disabled = false; }, 3000);
+      setTimeout(() => { window.location.href = 'venue-dashboard.html'; }, 1800);
     } else {
       throw new Error(data.message || 'Unknown error');
     }
